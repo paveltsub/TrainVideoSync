@@ -16,11 +16,23 @@
    ```bash
    git clone https://github.com/paveltsub/TrainVideoSync
    cd VideoProject
+   ```
 
-2. **Установите зависимости:**
+2. **Создайте виртуальное окружение/активируйте виртуальное окружение:**
+   ```bash
+   python -m venv venv
+   ```
+   ```
+   .\venv\Scripts\activate - Windows
+   ```
+   ```
+   source venv/bin/activate - Linux/Mac
+   ```
+
+3. **Установите зависимости:**
    ```bash
    pip install -r requirements.txt
-
+   ```
 ---
 
 ## Запуск
@@ -30,7 +42,7 @@
    ```bash
    cd video_player
    python video_player.py
-
+   ```
 2. **Запуск клиент-серверной архитектуры:**
    ```bash
    cd server_client

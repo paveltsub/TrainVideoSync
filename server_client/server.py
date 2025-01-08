@@ -18,22 +18,25 @@ class VideoServer:
         self.load_videos()
         self.read_annotations()
 
+        # находим общее время начала и конца
         self.start_time = min(ts[0] for ts in self.video_timestamps)
         self.end_time   = max(ts[-1] for ts in self.video_timestamps)
         self.current_time = self.start_time
 
+    # загрузка видео
     def load_videos(self):
         for path in self.video_files:
             cap = cv2.VideoCapture(path)
             self.captures.append(cap)
 
+    # чтение аннотаций
     def read_annotations(self):
         for path in self.annotation_files:
             with open(path, "r", encoding="utf-8") as f:
                 lines = f.read().strip().split()
                 timestamps = [float(x) for x in lines if x.strip()]
                 self.video_timestamps.append(timestamps)
-
+                
     # генератор кадров
     def generate_frames(self, speed_factor=1.0):
         dt_sec = 1.0 / self.fps_base
@@ -66,6 +69,7 @@ class VideoServer:
 
             self.current_time += dt_scaled
 
+    # закрытие видео
     def close(self):
         for cap in self.captures:
             cap.release()
@@ -95,6 +99,7 @@ def main():
 
     speed_factor = 1.0  # базовая скорость
 
+    # генерируем кадры и отправляем их
     try:
         for frames, real_ts in server.generate_frames(speed_factor):
             # подготавливаем 4 кадра к отправке (JPEG)

@@ -74,6 +74,7 @@ class VideoPlayer(QMainWindow):
         if self.step_backward_button:
             self.step_backward_button.clicked.connect(self.step_backward)
 
+    # инициализация видео
     def init_video_views_and_players(self):
         for i in range(4):
             gview = self.findChild(QGraphicsView, f"graphicsView_{i+1}")
@@ -109,6 +110,7 @@ class VideoPlayer(QMainWindow):
 
         self.adjust_all_views()
 
+    # изменение размера видео
     def adjust_all_views(self):
         for i in range(4):
             gview = self.gviews[i]
@@ -118,11 +120,13 @@ class VideoPlayer(QMainWindow):
             scene.setSceneRect(0, 0, gview.viewport().width(), gview.viewport().height())
             video_item.setPos(0, 0)
             video_item.setSize(scene.sceneRect().size())
-
+            
+    # показ окна
     def showEvent(self, event):
         super().showEvent(event)
         self.adjust_all_views()
 
+    # чтение аннотаций
     def read_annotations(self):
         for i in range(4):
             filepath = self.annotation_files[i]
@@ -131,11 +135,13 @@ class VideoPlayer(QMainWindow):
                 timestamps = [float(x) for x in lines if x.strip()]
                 self.video_timestamps.append(timestamps)
 
+    # кнопки
     def connect_buttons(self):
         self.play_button.clicked.connect(self.play_videos)
         self.pause_button.clicked.connect(self.switch_pause)
         self.restart_button.clicked.connect(self.restart_videos)
 
+    # изменение размера окна
     def resizeEvent(self, event):
         super().resizeEvent(event)
         self.adjust_all_views()
@@ -148,6 +154,7 @@ class VideoPlayer(QMainWindow):
         interval_ms = int(1000 / actual_fps)
         self.sync_timer.setInterval(interval_ms)
 
+    # изменение скорости
     def speed_change(self):
         if not self.speed_combobox:
             return
@@ -172,6 +179,7 @@ class VideoPlayer(QMainWindow):
         if not self.sync_timer.isActive():
             self.sync_timer.start()
 
+    # пуск/пауза
     def switch_pause(self):
         if self.is_paused:
             self.is_paused = False
@@ -182,6 +190,7 @@ class VideoPlayer(QMainWindow):
             if self.sync_timer.isActive():
                 self.sync_timer.stop()
 
+    # рестар видео
     def restart_videos(self):
         self.current_time = self.start_time
         self.is_paused = True
@@ -201,6 +210,7 @@ class VideoPlayer(QMainWindow):
         self.current_time = new_time
         self.update_frames()
 
+    # перемотка назад
     def step_backward(self):
         if self.sync_timer.isActive():
             self.sync_timer.stop()
@@ -245,6 +255,7 @@ class VideoPlayer(QMainWindow):
             self.current_time += dt
 
 
+# запуск
 if __name__ == "__main__":
     import sys
     from PyQt6.QtWidgets import QApplication

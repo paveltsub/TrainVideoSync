@@ -26,6 +26,7 @@ class VideoClient(QMainWindow):
         self.old_labels = []
         self.views = []
 
+        # создаем 4 сцены
         for i in range(1, 5):
             view_name = f"graphicsView_{i}"
             gview = self.findChild(QGraphicsView, view_name)
@@ -61,6 +62,7 @@ class VideoClient(QMainWindow):
         self.fps_base = 5.0
         self.old_threshold = 2.0 / self.fps_base
 
+    # получение кадров
     def receive_frames(self):
         try:
             parts = self.sub_socket.recv_multipart(flags=zmq.NOBLOCK)
@@ -117,6 +119,7 @@ class VideoClient(QMainWindow):
             dt = server_time - real_ts[i]
             self.old_labels[i].setVisible(dt > self.old_threshold)
 
+    # изменение размеров окна
     def resizeEvent(self, event):
         super().resizeEvent(event)
         for i in range(4):
@@ -133,6 +136,7 @@ class VideoClient(QMainWindow):
                     )
                     self.pix_items[i].setPixmap(new_pix)
 
+    # закрытие окна
     def closeEvent(self, event):
         self.sub_socket.close()
         super().closeEvent(event)

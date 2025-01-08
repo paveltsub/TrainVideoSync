@@ -6,6 +6,7 @@ from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler
 from telegram.ext import filters
 
+# настройка логгирования
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
@@ -91,7 +92,7 @@ async def handle_text_messages(update, context):
             # отправляем пользователю видео по file_id
             await update.message.reply_text(f"Отправляю файл {user_text}...")
             
-            # Длительные операции (большие файлы) можно увеличить таймаут
+            # длительные операции, увеличенный таймаут
             await context.bot.send_video(
                 chat_id=chat_id,
                 video=file_id,
